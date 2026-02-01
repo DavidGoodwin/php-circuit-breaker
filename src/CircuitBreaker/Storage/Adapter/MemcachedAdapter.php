@@ -39,7 +39,9 @@ class MemcachedAdapter extends BaseAdapter
     protected function load(string $key)
     {
         try {
-            return $this->memcached->get($key);
+            $result = $this->memcached->get($key);
+
+            return $result === false ? '' : (string) $result;
         } catch (\Exception $e) {
             throw new StorageException("Failed to load memcached key: $key", 1, $e);
         }
