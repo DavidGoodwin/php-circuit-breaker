@@ -1,16 +1,16 @@
 # Build Status 
-[![Build Status](https://travis-ci.org/geggleto/php-circuit-breaker.svg?branch=master)](https://travis-ci.org/geggleto/php-circuit-breaker)
+[![CI](https://github.com/DavidGoodwin/php-circuit-breaker/workflows/CI/badge.svg)](https://github.com/DavidGoodwin/php-circuit-breaker/actions)
 
 # What is php-circuit-breaker
 
 A component helping you gracefully handle outages and timeouts of external services (usually remote, 3rd party services).
 
 It is a library providing extremely easy to use circuit breaker component. It does not require external dependencies and it has default storage
-implementations for APC and Memcached but can be extended multiple ways.
+implementations for APCu and Memcached but can be extended multiple ways.
 
-# Frameworks support
+# Requirements
 
-This library does not require any particular PHP framework, all you need is PHP 5.6 or higher.
+This library does not require any particular PHP framework, all you need is PHP 7.4 or higher.
 
 # Motivation & Benefits
 
@@ -19,11 +19,7 @@ This library does not require any particular PHP framework, all you need is PHP 
 
 # Installation
 
-    "require": {
-        "geggleto/php-circuit-breaker": "^0.3"
-    },
-
-After that you should update composer dependencies and you are good to go.
+`composer require davidgoodwin/php-circuit-breaker`
 
 ## Use Case - Non-Critical Feature
 
@@ -33,7 +29,7 @@ After that you should update composer dependencies and you are good to go.
 
 Code of your application could look something like:
 <pre>
-    $factory = new Ejsmont\CircuitBreaker\Factory();
+    $factory = new DavidGoodwin\CircuitBreaker\Factory();
     $circuitBreaker = $factory->getSingleApcInstance(30, 300);
 
     $userProfile = null;
@@ -67,7 +63,7 @@ core business processes to be uninterrupted.
 
 Backend talking to the payment service could look like this:
 <pre>
-    $factory = new Ejsmont\CircuitBreaker\Factory();
+    $factory = new DavidGoodwin\CircuitBreaker\Factory();
     $circuitBreaker = $factory->getSingleApcInstance(30, 300);
 
     try{
@@ -88,7 +84,7 @@ to hide payment options that are failing.
 
 Frontend rendering the available payment options could look like this:
 <pre>
-    $factory = new Ejsmont\CircuitBreaker\Factory();
+    $factory = new DavidGoodwin\CircuitBreaker\Factory();
     $circuitBreaker = $factory->getSingleApcInstance(30, 300);
 
     if ($circuitBreaker->isAvailable("PaymentOptionOne")) {
@@ -99,7 +95,7 @@ Frontend rendering the available payment options could look like this:
 # Features
 
 * Track multiple services through a single Circuit Breaker instance.
-* Pluggable backend adapters, provided APC and Memcached by default.
+* Pluggable backend adapters, provided APCu and Memcached by default.
 * Customisable service thresholds. You can define how many failures are necessary for service to be considered down.
 * Customisable retry timeout. You do not want to disable the service forever. After provided timeout 
 circuit breaker will allow a single process to attempt 
@@ -115,7 +111,7 @@ Get/Set have been provided for these messages.
 Here is an example of a `EmailHandler`
 
 ```php
-use Ejsmont\CircuitBreaker\TrippedHandlerInterface;
+use DavidGoodwin\CircuitBreaker\TrippedHandlerInterface;
 
 class EmailHandler implements TrippedHandlerInterface
 {
@@ -148,7 +144,7 @@ $circuitBreaker->registerHandler("Database", new \Handler\EmailHandler("your_ema
 
 Overhead of the Circuit Breaker is negligible. 
 
-APC implementation takes roughly 0.0002s to perform isAvailable() and then reportSuccess() or reportFailure().
+APCu implementation takes roughly 0.0002s to perform isAvailable() and then reportSuccess() or reportFailure().
 
 Memcache adapter is in range of 0.0005s when talking to the local memcached process. 
 
@@ -165,9 +161,15 @@ Some implementation details has changed but the core logic is still the same.
 (Update) You can read my blog on what I do with this package, http://bolt.tamingtheelephpant.com/page/circuit-breakers-failing-gracefully
 
 ## Unit Testing
-`phpunit -c tests/phpunit.xml --bootstrap tests/bootstrap.php tests`
+
+`composer test`
+
+or ...
+
+`vendor/bin/phpunit tests`
 
 ## Author
 
 * Artur Esjmont (https://github.com/ejsmont-artur) via http://artur.ejsmont.org
 * Glenn Eggleton (https://github.com/geggleto)
+* David Goodwin (https://github.com/DavidGoodwin)

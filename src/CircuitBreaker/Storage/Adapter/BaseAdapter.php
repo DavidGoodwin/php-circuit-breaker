@@ -10,10 +10,10 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker\Storage\Adapter;
+namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
-use Ejsmont\CircuitBreaker\Storage\StorageInterface;
-use Ejsmont\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
+use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 
 /**
  * Parent with potentially reusable functions of cache adapters

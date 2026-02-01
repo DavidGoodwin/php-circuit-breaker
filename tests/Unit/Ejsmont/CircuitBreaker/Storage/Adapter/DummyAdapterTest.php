@@ -2,19 +2,20 @@
 
 namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
 
-use Ejsmont\CircuitBreaker\Factory;
-use Ejsmont\CircuitBreaker\Storage\Adapter\DummyAdapter;
+use DavidGoodwin\CircuitBreaker\Factory;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
+use PHPUnit\Framework\TestCase;
 
-class DummyAdapterTest extends \PHPUnit_Framework_TestCase {
+class DummyAdapterTest extends TestCase {
 
     private $_adapter;
 
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         $this->_adapter = new DummyAdapter();
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $this->_adapter = null;
         parent::tearDown();
     }
