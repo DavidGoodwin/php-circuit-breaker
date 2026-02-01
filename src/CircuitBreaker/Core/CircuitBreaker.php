@@ -263,7 +263,7 @@ class CircuitBreaker implements CircuitBreakerInterface
     /**
      * Quick and dirty way to use the breaker
      *
-     * @param $serviceName
+     * @param string   $serviceName
      * @param \Closure $code
      * @param \Closure $failed
      */
