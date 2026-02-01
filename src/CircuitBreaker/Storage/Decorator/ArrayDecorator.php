@@ -123,7 +123,7 @@ class ArrayDecorator implements StorageInterface
             $stats = unserialize($stats);
         }
 
-        // make sure unserialize and load were successfull and we have array
+        // make sure unserialize and load were successful and we have array
         if (!is_array($stats)) {
             $stats = array();
         }
