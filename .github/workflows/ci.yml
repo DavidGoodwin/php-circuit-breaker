@@ -52,4 +52,4 @@ jobs:
       run: composer test 
 
     - name: composer gc
-      run: composer cache-clear --gc
+      run: composer clear-cache --gc
