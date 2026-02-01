@@ -96,7 +96,7 @@ class ArrayDecorator implements StorageInterface
             // force reload stats
             $this->stats = $this->loadStatsArray();
 
-            // merge all dirty stats into the oryginal array
+            // merge all dirty stats into the original array
             foreach ($this->dirtyStats as $service => $values) {
                 foreach ($values as $name => $value) {
                     $this->stats[$service][$name] = $value;
