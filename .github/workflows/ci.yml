@@ -52,3 +52,6 @@ jobs:
     
     - name: Run test suite
       run: vendor/bin/phpunit -c tests/phpunit.xml --bootstrap tests/bootstrap.php tests
+
+    - name: composer gc
+      run: composer cache-clear --gc
