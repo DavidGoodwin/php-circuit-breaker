@@ -5,39 +5,36 @@ namespace CircuitBreaker\Storage\Adapter;
 use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
 use PHPUnit\Framework\TestCase;
 
-class DummyAdapterTest extends TestCase {
+class DummyAdapterTest extends TestCase
+{
+    private $adapter;
 
-    private $_adapter;
-
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
-        $this->_adapter = new DummyAdapter();
+        $this->adapter = new DummyAdapter();
     }
 
-    protected function tearDown(): void {
-        $this->_adapter = null;
-        parent::tearDown();
-    }
-
-    public function testLoadStatusSimple() {
-        $this->assertEquals("", $this->_adapter->loadStatus('AAA', 'bbb'));
+    public function testLoadStatusSimple()
+    {
+        $this->assertEquals("", $this->adapter->loadStatus('AAA', 'bbb'));
         $x = 'abcde';
-        $this->_adapter->saveStatus('AAA', 'bbb', $x);
-        $this->assertEquals("", $this->_adapter->loadStatus('AAa', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('AA', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('AAAA', 'bbb'));
-        $this->assertEquals('abcde', $this->_adapter->loadStatus('AAA', 'bbb'));
+        $this->adapter->saveStatus('AAA', 'bbb', $x);
+        $this->assertEquals("", $this->adapter->loadStatus('AAa', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('AA', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('AAAA', 'bbb'));
+        $this->assertEquals('abcde', $this->adapter->loadStatus('AAA', 'bbb'));
     }
 
-    public function testLoadStatusEmpty() {
-        $this->assertEquals("", $this->_adapter->loadStatus('', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('', ''));
-        $this->assertEquals("", $this->_adapter->loadStatus('BBB', ''));
-        $this->assertEquals("", $this->_adapter->loadStatus('AAA', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('B', 'bbb'));
-        $this->_adapter->saveStatus('B', 'bbb', "");
-        $this->assertEquals("", $this->_adapter->loadStatus('A', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('B', 'bbb'));
+    public function testLoadStatusEmpty()
+    {
+        $this->assertEquals("", $this->adapter->loadStatus('', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('', ''));
+        $this->assertEquals("", $this->adapter->loadStatus('BBB', ''));
+        $this->assertEquals("", $this->adapter->loadStatus('AAA', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('B', 'bbb'));
+        $this->adapter->saveStatus('B', 'bbb', "");
+        $this->assertEquals("", $this->adapter->loadStatus('A', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('B', 'bbb'));
     }
-
 }

@@ -31,11 +31,14 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "tedivm/stash": "^0.17|^1.0",
-        "psalm/phar": "^6"
+        "psalm/phar": "^6",
+        "squizlabs/php_codesniffer": "^4.0"
     },
     "scripts": {
         "tests": "@php vendor/bin/phpunit tests --do-not-cache-result ",
-        "psalm": "@php vendor/bin/psalm.phar --no-cache src "
+        "psalm": "@php vendor/bin/psalm.phar --no-cache src",
+        "phpcs": "@php vendor/bin/phpcs --standard=PSR12 --exclude=Generic.Files.LineLength  src/ tests",
+        "phpcbf": "@php vendor/bin/phpcbf --standard=PSR12 src/ tests/"
     },
     "autoload": {
         "psr-4": {

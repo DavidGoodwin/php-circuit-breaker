@@ -6,18 +6,19 @@ use DavidGoodwin\CircuitBreaker\CircuitBreakerInterface;
 use DavidGoodwin\CircuitBreaker\Factory;
 use PHPUnit\Framework\TestCase;
 
-class FactoryTest extends TestCase {
-
-    public function testThreshold() {
-        if(!function_exists('apcu_clear_cache')){
+class FactoryTest extends TestCase
+{
+    public function testThreshold()
+    {
+        if (!function_exists('apcu_clear_cache')) {
             $this->markTestSkipped("APCu not installed");
         }
 
-        if(ini_get('apc.enable_cli') === "0") {
+        if (ini_get('apc.enable_cli') === "0") {
             $this->markTestSkipped("APCu not enabled for CLI");
         }
         apcu_clear_cache();
-    
+
         $factory = new Factory();
         $cb = $factory->getSingleApcInstance(3);
 
@@ -36,14 +37,16 @@ class FactoryTest extends TestCase {
         $this->assertEquals(false, $cb->isAvailable('someSample'));
     }
 
-    public function testDummy() {
+    public function testDummy()
+    {
         $factory = new Factory();
         $cb = $factory->getDummyInstance(3, 44);
 
         $this->assertTrue($cb instanceof CircuitBreakerInterface);
     }
 
-    public function testMemcachedArray() {
+    public function testMemcachedArray()
+    {
         if (!class_exists('\Memcached')) {
             $this->markTestSkipped("extension not loaded");
         }
@@ -79,5 +82,4 @@ class FactoryTest extends TestCase {
         $cb->reportSuccess("serviceFour");
         $this->assertTrue($cb->isAvailable("serviceFour"));
     }
-
 }

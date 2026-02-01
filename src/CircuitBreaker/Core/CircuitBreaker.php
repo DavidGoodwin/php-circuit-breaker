@@ -23,7 +23,6 @@ use DavidGoodwin\CircuitBreaker\TrippedHandlerInterface;
  */
 class CircuitBreaker implements CircuitBreakerInterface
 {
-
     protected StorageInterface $storageAdapter;
 
     /**
@@ -174,7 +173,7 @@ class CircuitBreaker implements CircuitBreakerInterface
         // make sure storage adapter flushes changes this time
         $this->storageAdapter->saveStatus($serviceName, 'lastTest', (string)time(), true);
     }
-    
+
     public function isAvailable(string $serviceName): bool
     {
         $failures = $this->getFailures($serviceName);
@@ -183,7 +182,6 @@ class CircuitBreaker implements CircuitBreakerInterface
             // this is what happens most of the time so we evaluate first
             return true;
         } else {
-
             // This code block will execute a handler for tripping
             // Like the code block below there is still a race condition present so it will be possible for this code to
             // execute twice or more on extremely busy systems so please keep this in mind.
@@ -198,15 +196,15 @@ class CircuitBreaker implements CircuitBreakerInterface
             $lastTest = $this->getLastTest($serviceName);
             $retryTimeout = $this->getRetryTimeout($serviceName);
             if ($lastTest + $retryTimeout < time()) {
-                // Once we wait $retryTimeout, we have to allow one 
+                // Once we wait $retryTimeout, we have to allow one
                 // thread to try to connect again. To prevent all other threads
                 // from flooding, the potentially dead db, we update the time first
                 // and then try to connect. If db is dead only one thread will hang
                 // waiting for the connection. Others will get updated timeout from stats.
-                // 
+                //
                 // 'Race condition' is between first thread getting into this line and
                 // time it takes to store the settings. In that time other threads will
-                // also be entering this statement. Even on very busy servers it 
+                // also be entering this statement. Even on very busy servers it
                 // wont allow more than a few requests to get through before stats are updated.
                 //
                 // updating lastTest

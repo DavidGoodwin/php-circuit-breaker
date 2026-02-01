@@ -9,7 +9,6 @@ namespace DavidGoodwin\CircuitBreaker\Storage;
  */
 interface StorageInterface
 {
-
     /**
      * Loads circuit breaker service status value.
      * For example failures count or last retry time.

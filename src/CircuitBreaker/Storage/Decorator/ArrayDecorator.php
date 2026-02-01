@@ -18,7 +18,6 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
  */
 class ArrayDecorator implements StorageInterface
 {
-
     /**
      * @var StorageInterface inner storage handler that will be used to load and save the aggregated array.
      */
@@ -119,7 +118,6 @@ class ArrayDecorator implements StorageInterface
             $stats = [];
         }
         return $stats;
-
     }
 
     /**
@@ -132,5 +130,4 @@ class ArrayDecorator implements StorageInterface
             $this->instance->saveStatus($this->cacheKeyPrefix, $this->cacheKeySuffix, json_encode($this->stats, JSON_THROW_ON_ERROR), true);
         }
     }
-
 }

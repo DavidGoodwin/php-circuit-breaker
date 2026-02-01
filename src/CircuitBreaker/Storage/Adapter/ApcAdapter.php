@@ -14,15 +14,16 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
  *
  * @see StorageInterface
  */
-class ApcAdapter extends BaseAdapter {
-
+class ApcAdapter extends BaseAdapter
+{
     /**
      * Configure instance
      *
      * @param int $ttl          How long should circuit breaker data persist (between updates)
      * @param string  $cachePrefix  Value has to be string. If empty default cache key prefix is used.
      */
-    public function __construct(int $ttl = 3600, ?string $cachePrefix = null) {
+    public function __construct(int $ttl = 3600, ?string $cachePrefix = null)
+    {
         parent::__construct($ttl, $cachePrefix);
     }
 
@@ -32,7 +33,8 @@ class ApcAdapter extends BaseAdapter {
      * @throws StorageException if APCu is not loaded
      * @return void
      */
-    protected function checkExtension() {
+    protected function checkExtension()
+    {
         if (!function_exists("apcu_store")) {
             throw new StorageException("APCu extension not loaded.");
         }
@@ -46,7 +48,8 @@ class ApcAdapter extends BaseAdapter {
      *
      * @throws StorageException if storage error occurs, handler can not be used
      */
-    protected function load(string $key) {
+    protected function load(string $key)
+    {
         $result = apcu_fetch($key);
         return $result === false ? '' : (string) $result;
     }
@@ -61,11 +64,11 @@ class ApcAdapter extends BaseAdapter {
      *
      * @throws StorageException if storage error occurs, handler can not be used
      */
-    protected function save(string $key, string $value, int $ttl): void {
+    protected function save(string $key, string $value, int $ttl): void
+    {
         $result = apcu_store($key, $value, $ttl);
         if ($result === false) {
             throw new StorageException("Failed to save apc key: $key");
         }
     }
-
 }

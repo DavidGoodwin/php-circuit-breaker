@@ -15,7 +15,6 @@ use DavidGoodwin\CircuitBreaker\Storage\Decorator\ArrayDecorator;
  */
 class Factory
 {
-
     /**
      * Creates a circuit breaker with same settings for all services using raw APC cache key.
      * APC raw adapter is faster than when wrapped with array decorator as APC uses direct memory access.
@@ -61,5 +60,4 @@ class Factory
         $storage = new ArrayDecorator(new MemcachedAdapter($memcached));
         return new CircuitBreaker($storage, $maxFailures, $retryTimeout);
     }
-
 }

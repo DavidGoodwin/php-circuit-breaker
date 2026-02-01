@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Glenn
@@ -7,7 +8,6 @@
  */
 
 namespace DavidGoodwin\CircuitBreaker;
-
 
 interface TrippedHandlerInterface
 {

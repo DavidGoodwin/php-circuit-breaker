@@ -7,16 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class StashAdapterTest extends TestCase
 {
+    private StashAdapter $adapter;
 
-    /**
-     * @var StashAdapter
-     */
-    private $_adapter;
-
-    /**
-     * @var \Stash\Pool
-     */
-    private $_pool;
+    private \Stash\Pool $pool;
 
     protected function setUp(): void
     {
@@ -25,74 +18,74 @@ class StashAdapterTest extends TestCase
             $this->markTestSkipped("Stash not available.");
         }
 
-        $this->_pool = new \Stash\Pool(new \Stash\Driver\Ephemeral());
-        $this->_adapter = new StashAdapter($this->_pool);
+        $this->pool = new \Stash\Pool(new \Stash\Driver\Ephemeral());
+        $this->adapter = new StashAdapter($this->pool);
     }
 
     protected function tearDown(): void
     {
-        $this->_adapter = null;
+        $this->adapter = null;
         parent::tearDown();
     }
 
     public function testSave()
     {
         $x = "val";
-        $this->_adapter->saveStatus('AAA', 'BBB', $x);
-        $this->assertEquals("val", $this->_adapter->loadStatus('AAA', 'BBB'));
+        $this->adapter->saveStatus('AAA', 'BBB', $x);
+        $this->assertEquals("val", $this->adapter->loadStatus('AAA', 'BBB'));
     }
 
     public function testSaveEmpty()
     {
         $x = "";
-        $this->_adapter->saveStatus('X', 'BBB', $x);
-        $this->assertEquals("", $this->_adapter->loadStatus('X', 'BBB'));
+        $this->adapter->saveStatus('X', 'BBB', $x);
+        $this->assertEquals("", $this->adapter->loadStatus('X', 'BBB'));
     }
 
     public function testSaveClear()
     {
         $x = "valB";
-        $this->_adapter->saveStatus('AAA', 'BBB', $x);
+        $this->adapter->saveStatus('AAA', 'BBB', $x);
 
-        $this->_pool->clear();
+        $this->pool->clear();
 
-        $this->assertEquals("", $this->_adapter->loadStatus('AAA', 'BBB'));
+        $this->assertEquals("", $this->adapter->loadStatus('AAA', 'BBB'));
     }
 
     public function testNonInstance()
     {
         $x = rand(1, 1000000);
-        $this->_adapter->saveStatus('A', 'BBB', $x);
+        $this->adapter->saveStatus('A', 'BBB', $x);
         // make separate instance of clien and check if you can read through it
-        $inst = new StashAdapter($this->_pool);
+        $inst = new StashAdapter($this->pool);
         $this->assertEquals($x, $inst->loadStatus('A', 'BBB'));
     }
 
     public function testLoadStatusSimple()
     {
         $x = 'abcde';
-        $this->_adapter->saveStatus('AAA', 'bbb', $x);
-        $this->assertEquals("", $this->_adapter->loadStatus('AAa', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('AA', 'bbb'));
-        $this->assertEquals("", $this->_adapter->loadStatus('AAAA', 'bbb'));
-        $this->assertEquals('abcde', $this->_adapter->loadStatus('AAA', 'bbb'));
+        $this->adapter->saveStatus('AAA', 'bbb', $x);
+        $this->assertEquals("", $this->adapter->loadStatus('AAa', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('AA', 'bbb'));
+        $this->assertEquals("", $this->adapter->loadStatus('AAAA', 'bbb'));
+        $this->assertEquals('abcde', $this->adapter->loadStatus('AAA', 'bbb'));
     }
 
     public function testLoadStatusEmpty()
     {
-        $this->_pool->clear();
-        $this->assertEquals("", $this->_adapter->loadStatus('GGG', ''));
-        $this->assertEquals("", $this->_adapter->loadStatus('AAA', 'bbb'));
-        $this->_adapter->saveStatus('B', 'bbb', "");
-        $this->assertEquals("", $this->_adapter->loadStatus('A', 'bbb'), 6);
-        $this->assertEquals("", $this->_adapter->loadStatus('B', 'bbb'), 7);
+        $this->pool->clear();
+        $this->assertEquals("", $this->adapter->loadStatus('GGG', ''));
+        $this->assertEquals("", $this->adapter->loadStatus('AAA', 'bbb'));
+        $this->adapter->saveStatus('B', 'bbb', "");
+        $this->assertEquals("", $this->adapter->loadStatus('A', 'bbb'), 6);
+        $this->assertEquals("", $this->adapter->loadStatus('B', 'bbb'), 7);
     }
 
     public function testPrefix()
     {
-        $adapter1 = new StashAdapter($this->_pool);
-        $adapter2 = new StashAdapter($this->_pool, 1000, 'CircuitBreaker');
-        $adapter3 = new StashAdapter($this->_pool, 1000, 'CircuitWrong');
+        $adapter1 = new StashAdapter($this->pool);
+        $adapter2 = new StashAdapter($this->pool, 1000, 'CircuitBreaker');
+        $adapter3 = new StashAdapter($this->pool, 1000, 'CircuitWrong');
 
         $adapter1->saveStatus('abc', 'def', 951);
 
@@ -103,7 +96,7 @@ class StashAdapterTest extends TestCase
     public function testFailSave()
     {
         $this->expectException(\DavidGoodwin\CircuitBreaker\Storage\StorageException::class);
-        
+
         $stashMock = $this->createMock('\Stash\Pool');
         $stashMock->expects($this->once())->method("getItem")->will($this->throwException(new \Exception("some error")));
 
@@ -114,7 +107,7 @@ class StashAdapterTest extends TestCase
     public function testFailLoad()
     {
         $this->expectException(\DavidGoodwin\CircuitBreaker\Storage\StorageException::class);
-        
+
         $stashMock = $this->createMock('\Stash\Pool');
         $stashMock->expects($this->once())->method("getItem")->will($this->throwException(new \Exception("some error")));
 

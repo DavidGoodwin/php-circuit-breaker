@@ -7,7 +7,6 @@ use Stash\Pool;
 
 class StashAdapter extends BaseAdapter
 {
-
     protected Pool $stash;
 
     public function __construct(\Stash\Pool $client, int $ttl = 3600, ?string $cachePrefix = null)

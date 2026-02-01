@@ -28,7 +28,6 @@ namespace DavidGoodwin\CircuitBreaker;
  */
 interface CircuitBreakerInterface
 {
-
     /**
      * Check if service is available (according to CB knowledge)
      *

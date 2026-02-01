@@ -16,7 +16,6 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
  */
 class DummyAdapter implements StorageInterface
 {
-
     /**
      * @var mixed[] Array of all the values (transient)
      */
@@ -50,5 +49,4 @@ class DummyAdapter implements StorageInterface
     {
         $this->data[$serviceName][$attributeName] = $value;
     }
-
 }

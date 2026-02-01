@@ -58,5 +58,4 @@ class MemcachedAdapter extends BaseAdapter
             throw new StorageException("Failed to save memcached key: $key", 1, $e);
         }
     }
-
 }

@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Manual\Performance;
-
 /**
  * Simple script calling circuit breaker thousands of times reporting success or error and checking statuses
  *
@@ -11,8 +9,9 @@ namespace Tests\Manual\Performance;
  * APC backend: ~0.0001s per check+report
  */
 
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+namespace Tests\Manual\Performance;
 
+require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use DavidGoodwin\CircuitBreaker\Factory;
 

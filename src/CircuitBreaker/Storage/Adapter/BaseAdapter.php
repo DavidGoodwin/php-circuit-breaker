@@ -12,7 +12,6 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
  */
 abstract class BaseAdapter implements StorageInterface
 {
-
     /**
      * @var int value in seconds, how long should the stats array persist in cache
      */

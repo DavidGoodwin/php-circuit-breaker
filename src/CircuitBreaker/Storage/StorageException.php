@@ -1,4 +1,5 @@
 <?php
+
 namespace DavidGoodwin\CircuitBreaker\Storage;
 
 /**
@@ -7,6 +8,6 @@ namespace DavidGoodwin\CircuitBreaker\Storage;
  * the storage or out of space or underlying PHP extension is missing etc.
  *
  */
-class StorageException extends \Exception {
-    
+class StorageException extends \Exception
+{
 }

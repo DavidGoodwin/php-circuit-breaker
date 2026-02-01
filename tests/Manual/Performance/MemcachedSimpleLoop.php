@@ -2,11 +2,11 @@
 
 /**
  * Simple script calling circuit breaker thousands of times reporting success or error and checking statuses
- * 
- * This can be used to see how circuit breaker can be instantinated and used easily, it also gives gauge 
+ *
+ * This can be used to see how circuit breaker can be instantinated and used easily, it also gives gauge
  * of the approximate performance.
- * 
- * Memcached to local memcached: ~0.0005s per check+report 
+ *
+ * Memcached to local memcached: ~0.0005s per check+report
  */
 
 namespace Tests\Manual\Performance;

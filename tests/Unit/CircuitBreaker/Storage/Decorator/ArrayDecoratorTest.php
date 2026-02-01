@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class ArrayDecoratorTest extends TestCase
 {
-
     private ArrayDecorator $adapter;
 
     protected function setUp(): void
@@ -128,5 +127,4 @@ class ArrayDecoratorTest extends TestCase
         $e = new StorageException();
         $this->assertTrue($e instanceof \Exception);
     }
-
 }
