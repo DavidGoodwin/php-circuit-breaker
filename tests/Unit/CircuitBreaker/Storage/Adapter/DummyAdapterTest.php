@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
+namespace CircuitBreaker\Storage\Adapter;
 
-use DavidGoodwin\CircuitBreaker\Factory;
 use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
 use PHPUnit\Framework\TestCase;
 

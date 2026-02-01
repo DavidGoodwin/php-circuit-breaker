@@ -175,8 +175,7 @@ class CircuitBreaker implements CircuitBreakerInterface
         // make sure storage adapter flushes changes this time
         $this->storageAdapter->saveStatus($serviceName, 'lastTest', (string)time(), true);
     }
-
-
+    
     public function isAvailable(string $serviceName): bool
     {
         $failures = $this->getFailures($serviceName);

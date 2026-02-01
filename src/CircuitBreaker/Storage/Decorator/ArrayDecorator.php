@@ -83,7 +83,7 @@ class ArrayDecorator implements StorageInterface
      *
      * @throws StorageException if storage error occurs, handler can not be used
      */
-    public function saveStatus($serviceName, $attributeName, $value, $flush = false)
+    public function saveStatus(string $serviceName, string $attributeName, string $value, bool $flush = false): void
     {
         // before writing we load the data no matter what
         $this->stats = $this->loadStatsArray();
@@ -116,7 +116,7 @@ class ArrayDecorator implements StorageInterface
      * Loads stats only if need to be loaded.
      *
      */
-    protected function loadStatsArray(): array
+    private function loadStatsArray(): array
     {
         $stats = $this->instance->loadStatus($this->cacheKeyPrefix, $this->cacheKeySuffix);
         if (!empty($stats)) {

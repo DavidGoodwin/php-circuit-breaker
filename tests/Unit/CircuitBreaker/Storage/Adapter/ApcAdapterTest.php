@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
+namespace CircuitBreaker\Storage\Adapter;
 
 use DavidGoodwin\CircuitBreaker\Storage\Adapter\ApcAdapter;
 use PHPUnit\Framework\TestCase;

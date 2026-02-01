@@ -1,7 +1,7 @@
 <?php
+
 namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
-use DavidGoodwin\CircuitBreaker\Storage\Adapter\BaseAdapter;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 use Stash\Pool;
 
@@ -28,7 +28,13 @@ class StashAdapter extends BaseAdapter
         /* md5 the key, as stash strtolowers it we can't otherwise enforce case sensitivity */
         $key = md5($key);
         try {
-            return $this->stash->getItem($key)->get();
+            $item = $this->stash->getItem($key);
+            $ret = $item->get();
+
+            if ($item->isHit() && is_string($ret)) {
+                return $ret;
+            }
+            return '';
         } catch (\Exception $e) {
             throw new StorageException("Failed to load stash key: $key", 1, $e);
         }

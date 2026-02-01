@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Ejsmont\CircuitBreaker;
+namespace CircuitBreaker;
 
-use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
 use DavidGoodwin\CircuitBreaker\Core\CircuitBreaker;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
 use PHPUnit\Framework\TestCase;
 
 class CircuitBreakerTest extends TestCase {
@@ -15,7 +15,7 @@ class CircuitBreakerTest extends TestCase {
     private $_cb;
 
     /** @var array  */
-    private $conf = array(
+    private array $conf = array(
         "dbKnown" => array('maxFailures' => 5, 'retryTimeout' => 5),
         "dbWrong" => array('maxFailures' => 0, 'retryTimeout' => 0),
     );
@@ -31,12 +31,6 @@ class CircuitBreakerTest extends TestCase {
         }
     }
 
-    protected function tearDown(): void {
-        $this->_adapter = null;
-        $this->_cb = null;
-        parent::tearDown();
-    }
-
     public function testOk() {
         $this->assertEquals(true, $this->_cb->isAvailable('dbKnown'));
         $this->assertEquals(true, $this->_cb->isAvailable('dbWrong'));
@@ -48,8 +42,9 @@ class CircuitBreakerTest extends TestCase {
             $this->assertEquals(true, $this->_cb->isAvailable('dbKnown'), 1);
             $this->_cb->reportFailure('dbKnown');
         }
+
         for ($i = 0; $i < 20; $i++) {
-            $this->assertEquals(false, $this->_cb->isAvailable('dbKnown'), "2:" . $i);
+            $this->assertEquals(false, $this->_cb->isAvailable('dbKnown'), "attempt 2:" . $i);
             $this->_cb->reportFailure('dbKnown');
         }
         $this->assertEquals(25, $this->_adapter->loadStatus('dbKnown', 'failures'));

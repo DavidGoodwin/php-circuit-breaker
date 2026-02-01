@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
+namespace CircuitBreaker\Storage\Decorator;
 
 use DavidGoodwin\CircuitBreaker\Storage\Adapter\ApcAdapter;
 use DavidGoodwin\CircuitBreaker\Storage\Decorator\ArrayDecorator;
