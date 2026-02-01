@@ -1,10 +1,10 @@
 {
-    "name": "geggleto/php-circuit-breaker",
+    "name": "davidgoodwin/php-circuit-breaker",
     "type": "library",
     "description": "PHP Circuit Breaker component",
     "keywords": ["circuit breaker","graceful", "error handling"],
     "license": "MIT",
-    "homepage": "https://github.com/ejsmont-artur/php-circuit-breaker",
+    "homepage": "https://github.com/DavidGoodwin/php-circuit-breaker",
     "authors": [
       {
         "name": "Artur Ejsmont",
@@ -15,6 +15,11 @@
         "name" : "Glenn Eggleton",
         "homepage" : "http://bolt.tamingtheelephpant.com",
         "role" : "Developer"
+      },
+      {
+        "name": "David Goodwin",
+        "homepage": "https://github.com/DavidGoodwin",
+        "role": "Developer"
       }
     ],
     "suggest" : {

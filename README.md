@@ -20,7 +20,7 @@ This library does not require any particular PHP framework, all you need is PHP 
 # Installation
 
     "require": {
-        "geggleto/php-circuit-breaker": "^0.3"
+        "davidgoodwin/php-circuit-breaker": "^1.0"
     },
 
 After that you should update composer dependencies and you are good to go.
@@ -171,3 +171,4 @@ Some implementation details has changed but the core logic is still the same.
 
 * Artur Esjmont (https://github.com/ejsmont-artur) via http://artur.ejsmont.org
 * Glenn Eggleton (https://github.com/geggleto)
+* David Goodwin (https://github.com/DavidGoodwin)
