@@ -1,19 +1,9 @@
 <?php
 
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker\Storage\Decorator;
 
-use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 
 /**
  * Service status data can be aggregated into one array.
@@ -21,11 +11,11 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageException;
  * Otherwise every service counter/time would have to be loaded separately.
  * Decorator will group updates until flush is requested.
  * On save flush decorator will load stats again and update them with new values.
- * 
- * @see Ejsmont\CircuitBreaker\Storage\StorageInterface
- * @package Ejsmont\CircuitBreaker\Components
+ *
+ * @see StorageInterface
  */
-class ArrayDecorator implements StorageInterface {
+class ArrayDecorator implements StorageInterface
+{
 
     /**
      * @var StorageInterface Storage handler that will be used to load and save the aggregated array.
@@ -35,7 +25,7 @@ class ArrayDecorator implements StorageInterface {
     /**
      * @var array Array of agregated service stats loaded from storage handler
      */
-    protected $stats = false;
+    protected ?array $stats = null;
 
     /**
      * @var array Array of stats that have been updated since last flush or since script processing began.
@@ -54,50 +44,49 @@ class ArrayDecorator implements StorageInterface {
 
     /**
      * Configure decorator instance
-     * 
+     *
      * @param StorageInterface $wrappedInstance instance of storage interface that will be used
      */
-    public function __construct(StorageInterface $wrappedInstance) {
+    public function __construct(StorageInterface $wrappedInstance)
+    {
         $this->instance = $wrappedInstance;
     }
 
     /**
      * Loads circuit breaker service status values from array.
      * Only one remote call for all services.
-     * 
-     * @param 	string  $serviceName   name of service to load stats for
-     * @param 	string  $attributeName name of attribute to load
-     * @return 	string  value stored or '' if value was not found
-     *  
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @param string $serviceName name of service to load stats for
+     * @param string $attributeName name of attribute to load
+     * @return    string  value stored or '' if value was not found
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    public function loadStatus($serviceName, $attributeName) {
+    public function loadStatus(string $serviceName, string $attributeName): string
+    {
         // make sure we have the values loaded (request time cache of all service stats)
-        $this->loadStatsArray();
+        $this->stats = $this->loadStatsArray();
         // return 
-        if (isset($this->stats[$serviceName][$attributeName])) {
-            return $this->stats[$serviceName][$attributeName];
-        } else {
-            return "";
-        }
+        return $this->stats[$serviceName][$attributeName] ?? '';
     }
 
     /**
      * We reload values just before saving to reduce race condition time.
      * The updated values are merged with previous values.
      * Then everything is stored back into the storage
-     * 
-     * @param 	string  $serviceName   name of service to load stats for
-     * @param 	string  $attributeName name of the attribute to load 
-     * @param 	string  $value         string value loaded or '' if nothing found 
-     * @param   boolean $flush         set to true will force immediate save, false does not guaranteed saving at all.
-     * @return 	void
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @param string $serviceName name of service to load stats for
+     * @param string $attributeName name of the attribute to load
+     * @param string $value string value loaded or '' if nothing found
+     * @param boolean $flush set to true will force immediate save, false does not guaranteed saving at all.
+     * @return    void
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    public function saveStatus($serviceName, $attributeName, $value, $flush = false) {
+    public function saveStatus($serviceName, $attributeName, $value, $flush = false)
+    {
         // before writing we load the data no matter what
-        $this->loadStatsArray();
+        $this->stats = $this->loadStatsArray();
 
         // if this service is unknown add it to dirty array
         $this->dirtyStats[$serviceName][$attributeName] = $value;
@@ -105,8 +94,7 @@ class ArrayDecorator implements StorageInterface {
 
         if ($flush) {
             // force reload stats
-            $this->stats = false;
-            $this->loadStatsArray();
+            $this->stats = $this->loadStatsArray();
 
             // merge all dirty stats into the oryginal array
             foreach ($this->dirtyStats as $service => $values) {
@@ -126,30 +114,31 @@ class ArrayDecorator implements StorageInterface {
     /**
      * Method that actually loads the stats array from wrapped instance.
      * Loads stats only if need to be loaded.
-     * 
-     * @return void
+     *
      */
-    protected function loadStatsArray() {
-        if (!is_array($this->stats)) {
-            $stats = $this->instance->loadStatus($this->cacheKeyPrefix, $this->cacheKeySuffix);
-            if (!empty($stats)) {
-                $this->stats = unserialize($stats);
-            }
-
-            // make sure unserialize and load were successfull and we have array
-            if (!is_array($this->stats)) {
-                $this->stats = array();
-            }
+    protected function loadStatsArray(): array
+    {
+        $stats = $this->instance->loadStatus($this->cacheKeyPrefix, $this->cacheKeySuffix);
+        if (!empty($stats)) {
+            $stats = unserialize($stats);
         }
+
+        // make sure unserialize and load were successfull and we have array
+        if (!is_array($stats)) {
+            $stats = array();
+        }
+        return $stats;
+
     }
 
     /**
      * Method that actually saves the stats array in wrapped instance.
      * Saves only if there is dirty service data.
-     * 
+     *
      * @return void
      */
-    protected function saveStatsArray() {
+    protected function saveStatsArray()
+    {
         if (is_array($this->stats)) {
             $this->instance->saveStatus($this->cacheKeyPrefix, $this->cacheKeySuffix, serialize($this->stats), true);
         }

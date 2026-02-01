@@ -3,16 +3,14 @@ namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
 use DavidGoodwin\CircuitBreaker\Storage\Adapter\BaseAdapter;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
+use Stash\Pool;
 
 class StashAdapter extends BaseAdapter
 {
 
-    /**
-     * @var \Stash\Pool $client
-     */
-    protected $stash = null;
+    protected Pool $stash;
 
-    public function __construct(\Stash\Pool $client, $ttl = 3600, $cachePrefix = false)
+    public function __construct(\Stash\Pool $client, int $ttl = 3600, ?string $cachePrefix = null)
     {
         parent::__construct($ttl, $cachePrefix);
         $this->stash = $client;
@@ -25,7 +23,7 @@ class StashAdapter extends BaseAdapter
         }
     }
 
-    protected function load($key)
+    protected function load(string $key): string
     {
         /* md5 the key, as stash strtolowers it we can't otherwise enforce case sensitivity */
         $key = md5($key);
@@ -36,7 +34,7 @@ class StashAdapter extends BaseAdapter
         }
     }
 
-    protected function save($key, $value, $ttl)
+    protected function save(string $key, string $value, int $ttl): void
     {
         /* md5 the key, as stash strtolowers it we can't otherwise enforce case sensitivity */
         $key = md5($key);

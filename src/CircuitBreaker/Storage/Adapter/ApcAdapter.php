@@ -1,45 +1,35 @@
 <?php
 
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
 use DavidGoodwin\CircuitBreaker\Storage\Adapter\BaseAdapter;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 
 /**
  * Recommended adapter using APCu local shared memory cache.
  * Super fast, safe, always available (if installed).
  * Does not introduce remote point of failure.
- * Can be efficently used to load/save each attribute separately if you wish
- * 
- * @see Ejsmont\CircuitBreaker\Storage\StorageInterface
- * @package Ejsmont\CircuitBreaker\Components
+ * Can be efficiently used to load/save each attribute separately if you wish
+ *
+ * @see StorageInterface
  */
 class ApcAdapter extends BaseAdapter {
 
     /**
      * Configure instance
-     * 
-     * @param Integer $ttl          How long should circuit breaker data persist (between updates)
-     * @param String  $cachePrefix  Value has to be string. If empty default cache key prefix is used.
+     *
+     * @param int $ttl          How long should circuit breaker data persist (between updates)
+     * @param string  $cachePrefix  Value has to be string. If empty default cache key prefix is used.
      */
-    public function __construct($ttl = 3600, $cachePrefix = false) {
+    public function __construct(int $ttl = 3600, ?string $cachePrefix = null) {
         parent::__construct($ttl, $cachePrefix);
     }
 
     /**
      * Helper method to make sure that APCu extension is loaded
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if APCu is not loaded
+     *
+     * @throws StorageException if APCu is not loaded
      * @return void
      */
     protected function checkExtension() {
@@ -50,27 +40,27 @@ class ApcAdapter extends BaseAdapter {
 
     /**
      * Loads item by cache key.
-     * 
+     *
      * @param string $key
      * @return mixed
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    protected function load($key) {
+    protected function load(string $key) {
         return apcu_fetch($key);
     }
 
     /**
      * Save item in the cache.
-     * 
+     *
      * @param string $key
      * @param string $value
      * @param int $ttl
      * @return void
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    protected function save($key, $value, $ttl) {
+    protected function save(string $key, string $value, int $ttl): void {
         $result = apcu_store($key, $value, $ttl);
         if ($result === false) {
             throw new StorageException("Failed to save apc key: $key");

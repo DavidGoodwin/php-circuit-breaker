@@ -1,26 +1,12 @@
 <?php
-
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker\Storage;
 
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 
 /**
- * Interface defines methods for storage adapters/decorators for the circuit breaker persistance.
+ * Interface defines methods for storage adapters/decorators for the circuit breaker persistence.
  *
- * Minimalistic interface to allow easy integration with any persistance backend.
- * 
- * 
- * @package Ejsmont\CircuitBreaker\Components
+ * Minimalistic interface to allow easy integration with any persistence backend.
  */
 interface StorageInterface {
 

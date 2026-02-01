@@ -1,15 +1,5 @@
 <?php
 
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker;
 
 use DavidGoodwin\CircuitBreaker\Core\CircuitBreaker;
@@ -20,37 +10,39 @@ use DavidGoodwin\CircuitBreaker\Storage\Decorator\ArrayDecorator;
 
 /**
  * Allows easy assembly of circuit breaker instances.
- * 
- * @see Ejsmont\CircuitBreaker\CircuitBreakerInterface
- * @package Ejsmont\CircuitBreaker\PublicApi 
+ *
+ * @see CircuitBreakerInterface
  */
-class Factory {
+class Factory
+{
 
     /**
      * Creates a circuit breaker with same settings for all services using raw APC cache key.
      * APC raw adapter is faster than when wrapped with array decorator as APC uses direct memory access.
-     * 
-     * @param int   $maxFailures    how many times do we allow service to fail before considering it offline
-     * @param int   $retryTimeout   how many seconds should we wait before attempting retry
-     * 
-     * @return CircuitBreakerInterface 
+     *
+     * @param int $maxFailures how many times do we allow service to fail before considering it offline
+     * @param int $retryTimeout how many seconds should we wait before attempting retry
+     *
+     * @return CircuitBreakerInterface
      */
-    public static function getSingleApcInstance($maxFailures = 20, $retryTimeout = 30) {
+    public static function getSingleApcInstance(int $maxFailures = 20, int $retryTimeout = 30): CircuitBreakerInterface
+    {
         $storage = new ApcAdapter();
         return new CircuitBreaker($storage, $maxFailures, $retryTimeout);
     }
 
     /**
      * Creates a circuit breaker using php array() as storage.
-     * This instance looses the state when script execution ends. 
+     * This instance looses the state when script execution ends.
      * Useful for testing and/or extremely long running backend scripts.
      *
-     * @param int   $maxFailures    how many times do we allow service to fail before considering it offline
-     * @param int   $retryTimeout   how many seconds should we wait before attempting retry
-     * 
-     * @return CircuitBreakerInterface 
+     * @param int $maxFailures how many times do we allow service to fail before considering it offline
+     * @param int $retryTimeout how many seconds should we wait before attempting retry
+     *
+     * @return CircuitBreakerInterface
      */
-    public static function getDummyInstance($maxFailures = 20, $retryTimeout = 30) {
+    public static function getDummyInstance(int $maxFailures = 20, int $retryTimeout = 30): CircuitBreakerInterface
+    {
         $storage = new DummyAdapter();
         return new CircuitBreaker($storage, $maxFailures, $retryTimeout);
     }
@@ -58,13 +50,14 @@ class Factory {
     /**
      * Creates a circuit breaker with same settings for all services using memcached instance as a backend
      *
-     * @param Memcached $memcached      instance of a connected Memcached object
-     * @param int       $maxFailures    how many times do we allow service to fail before considering it offline
-     * @param int       $retryTimeout   how many seconds should we wait before attempting retry
-     * 
-     * @return CircuitBreakerInterface 
+     * @param \Memcached $memcached instance of a connected Memcached object
+     * @param int $maxFailures how many times do we allow service to fail before considering it offline
+     * @param int $retryTimeout how many seconds should we wait before attempting retry
+     *
+     * @return CircuitBreakerInterface
      */
-    public static function getMemcachedInstance(\Memcached $memcached, $maxFailures = 20, $retryTimeout = 30) {
+    public static function getMemcachedInstance(\Memcached $memcached, int $maxFailures = 20, int $retryTimeout = 30): CircuitBreakerInterface
+    {
         $storage = new ArrayDecorator(new MemcachedAdapter($memcached));
         return new CircuitBreaker($storage, $maxFailures, $retryTimeout);
     }

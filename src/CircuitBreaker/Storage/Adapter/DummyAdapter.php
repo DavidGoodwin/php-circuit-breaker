@@ -1,15 +1,5 @@
 <?php
 
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
 use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
@@ -22,8 +12,7 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
  * When real storage handler throws exception it means it cant be used any more.
  * Then storage user can safely fallback to this dummy instance.
  * 
- * @see Ejsmont\CircuitBreaker\Storage\StorageInterface
- * @package Ejsmont\CircuitBreaker\Components
+ * @see StorageInterface
  */
 class DummyAdapter implements StorageInterface {
 

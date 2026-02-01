@@ -11,5 +11,5 @@ namespace DavidGoodwin\CircuitBreaker;
 
 interface TrippedHandlerInterface
 {
-    public function __invoke($serviceName, $count, $message);
+    public function __invoke(string $serviceName, int $count, string $message): void;
 }
