@@ -1,16 +1,16 @@
 # Build Status 
-[![Build Status](https://travis-ci.org/geggleto/php-circuit-breaker.svg?branch=master)](https://travis-ci.org/geggleto/php-circuit-breaker)
+[![CI](https://github.com/DavidGoodwin/php-circuit-breaker/workflows/CI/badge.svg)](https://github.com/DavidGoodwin/php-circuit-breaker/actions)
 
 # What is php-circuit-breaker
 
 A component helping you gracefully handle outages and timeouts of external services (usually remote, 3rd party services).
 
 It is a library providing extremely easy to use circuit breaker component. It does not require external dependencies and it has default storage
-implementations for APC and Memcached but can be extended multiple ways.
+implementations for APCu and Memcached but can be extended multiple ways.
 
 # Frameworks support
 
-This library does not require any particular PHP framework, all you need is PHP 5.6 or higher.
+This library does not require any particular PHP framework, all you need is PHP 7.4 or higher.
 
 # Motivation & Benefits
 
@@ -99,7 +99,7 @@ Frontend rendering the available payment options could look like this:
 # Features
 
 * Track multiple services through a single Circuit Breaker instance.
-* Pluggable backend adapters, provided APC and Memcached by default.
+* Pluggable backend adapters, provided APCu and Memcached by default.
 * Customisable service thresholds. You can define how many failures are necessary for service to be considered down.
 * Customisable retry timeout. You do not want to disable the service forever. After provided timeout 
 circuit breaker will allow a single process to attempt 
@@ -148,7 +148,7 @@ $circuitBreaker->registerHandler("Database", new \Handler\EmailHandler("your_ema
 
 Overhead of the Circuit Breaker is negligible. 
 
-APC implementation takes roughly 0.0002s to perform isAvailable() and then reportSuccess() or reportFailure().
+APCu implementation takes roughly 0.0002s to perform isAvailable() and then reportSuccess() or reportFailure().
 
 Memcache adapter is in range of 0.0005s when talking to the local memcached process. 
 
