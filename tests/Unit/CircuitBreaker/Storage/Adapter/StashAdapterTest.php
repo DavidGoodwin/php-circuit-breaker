@@ -91,8 +91,8 @@ class StashAdapterTest extends TestCase
     public function testPrefix()
     {
         $adapter1 = new StashAdapter($this->_pool);
-        $adapter2 = new StashAdapter($this->_pool, 1000, 'EjsmontCircuitBreaker');
-        $adapter3 = new StashAdapter($this->_pool, 1000, 'EjsmontCircuitWrong');
+        $adapter2 = new StashAdapter($this->_pool, 1000, 'CircuitBreaker');
+        $adapter3 = new StashAdapter($this->_pool, 1000, 'CircuitWrong');
 
         $adapter1->saveStatus('abc', 'def', 951);
 

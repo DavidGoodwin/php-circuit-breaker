@@ -19,9 +19,9 @@ abstract class BaseAdapter implements StorageInterface
     protected int $ttl;
 
     /**
-     * @var string cache key prefix, might be overridden in constructor in the future
+     * @var string cache key prefix, might be overridden in constructor
      */
-    protected string $cachePrefix = "EjsmontCircuitBreaker";
+    protected string $cachePrefix = "CircuitBreaker";
 
     /**
      * Configure instance
@@ -64,12 +64,12 @@ abstract class BaseAdapter implements StorageInterface
 
     /**
      * Saves circuit breaker service status value.
-     * Method does not care what are the attribute names. They are not inspected.
-     * Any string can be passed as service name and attribute name, value can be int/string.
+     *
+     * Any string can be passed as a service name and attribute name, value can be int/string.
      *
      * Saving in storage is not guaranteed unless flush is set to true.
-     * Use calls without flush if you know you will update more than one value and you want to
-     * improve performance of the calls.
+     * Use calls without a flush if you know you will update more than one value and you want to
+     * improve the performance of the calls.
      *
      * @param string $serviceName name of service to load stats for
      * @param string $attributeName name of the attribute to load

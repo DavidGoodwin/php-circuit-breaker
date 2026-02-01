@@ -17,10 +17,9 @@ use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 use DavidGoodwin\CircuitBreaker\TrippedHandlerInterface;
 
 /**
- * Allows user code to track availability of any service by serviceName.
+ * Allows user code to track the availability of any service by serviceName.
  *
- * @see Ejsmont\CircuitBreaker\CircuitBreakerInterface
- * @package Ejsmont\CircuitBreaker\Components
+ * @see CircuitBreakerInterface
  */
 class CircuitBreaker implements CircuitBreakerInterface
 {
@@ -59,7 +58,7 @@ class CircuitBreaker implements CircuitBreakerInterface
     protected string $retryMessage = "Retrying Service";
 
     /**
-     * Configure instance with storage implementation and default threshold and retry timeout.
+     * Configure an instance with storage implementation and default threshold and retry timeout.
      *
      * @param StorageInterface $storage storage implementation
      * @param int $maxFailures default threshold, if service fails this many times will be disabled

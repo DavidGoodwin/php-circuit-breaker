@@ -7,20 +7,19 @@ use DavidGoodwin\CircuitBreaker\Storage\Decorator\ArrayDecorator;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 use PHPUnit\Framework\TestCase;
 
-class ArrayDecoratorTest extends TestCase {
+class ArrayDecoratorTest extends TestCase
+{
 
-    /**
-     * @var ArrayDecorator 
-     */
-    private $adapter;
+    private ArrayDecorator $adapter;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
-        if(!function_exists('apcu_clear_cache')){
+        if (!function_exists('apcu_clear_cache')) {
             $this->markTestSkipped("APCu not installed");
         }
-        if(ini_get('apc.enable_cli') === "0") {
+        if (ini_get('apc.enable_cli') === "0") {
             $this->markTestSkipped("APCu not enabled for CLI");
         }
 
@@ -29,20 +28,15 @@ class ArrayDecoratorTest extends TestCase {
         $this->adapter = new ArrayDecorator(new ApcAdapter());
     }
 
-    protected function tearDown(): void {
-        $this->adapter = null;
-        parent::tearDown();
-    }
-
-    // ================================================= TESTS ========================================================
-
-    public function testSave() {
+    public function testSaveOnly()
+    {
         $x = "val";
         $this->adapter->saveStatus('AAA', 'BBB', $x);
         $this->assertEquals("val", $this->adapter->loadStatus('AAA', 'BBB'));
     }
 
-    public function testSecondInstanceNoFlush() {
+    public function testSecondInstanceNoFlush()
+    {
         // make a separate instance of client and check if you can read through it
         $secondary = new ArrayDecorator(new ApcAdapter());
         $x = rand(1, 100000);
@@ -53,7 +47,8 @@ class ArrayDecoratorTest extends TestCase {
         $this->assertEquals("", $secondary->loadStatus('AN', 'BBB1'));
     }
 
-    public function testSecondInstanceFlush() {
+    public function testSecondInstanceFlush()
+    {
         // make a separate instance of client and check if you can read through it
         $secondary = new ArrayDecorator(new ApcAdapter());
         $x = rand(1, 100000);
@@ -64,13 +59,15 @@ class ArrayDecoratorTest extends TestCase {
         $this->assertEquals($x, $secondary->loadStatus('AN', 'BBB2'));
     }
 
-    public function testSaveEmpty() {
+    public function testSaveEmpty()
+    {
         $x = "";
         $this->adapter->saveStatus('X', 'BBB', $x);
         $this->assertEquals("", $this->adapter->loadStatus('X', 'BBB'));
     }
 
-    public function testClearCacheDoesNotClearArray() {
+    public function testClearCacheDoesNotClearArray()
+    {
         $this->adapter->saveStatus('AAAC', 'BBBC', "valB", true);
         // value loaded from array
         $this->assertEquals("valB", $this->adapter->loadStatus('AAAC', 'BBBC'));
@@ -78,17 +75,20 @@ class ArrayDecoratorTest extends TestCase {
         $this->assertEquals("valB", $this->adapter->loadStatus('AAAC', 'BBBC'));
     }
 
-    public function testSaveThenLoadNoFlush() {
+    public function testSaveThenLoadNoFlush()
+    {
         $this->adapter->saveStatus('AAANF', 'BBBC', "nf1");
         $this->assertEquals("nf1", $this->adapter->loadStatus('AAANF', 'BBBC'));
     }
 
-    public function testSaveThenLoadFlush() {
+    public function testSaveThenLoadFlush()
+    {
         $this->adapter->saveStatus('AAANF', 'BBBC', "nf2", true);
         $this->assertEquals("nf2", $this->adapter->loadStatus('AAANF', 'BBBC'));
     }
 
-    public function testLoadStatusSimple() {
+    public function testLoadStatusSimple()
+    {
         $this->assertEquals("", $this->adapter->loadStatus('AAA', 'bbb'));
 
         $this->adapter->saveStatus('AAA', 'bbb', 'abcde1');
@@ -99,7 +99,8 @@ class ArrayDecoratorTest extends TestCase {
         $this->assertEquals('abcde1', $this->adapter->loadStatus('AAA', 'bbb'));
     }
 
-    public function testLoadStatusEmpty() {
+    public function testLoadStatusEmpty()
+    {
         $this->assertEquals("", $this->adapter->loadStatus('', 'bbb'));
         $this->assertEquals("", $this->adapter->loadStatus('', ''));
         $this->assertEquals("", $this->adapter->loadStatus('BBB', ''));
@@ -110,10 +111,11 @@ class ArrayDecoratorTest extends TestCase {
         $this->assertEquals("", $this->adapter->loadStatus('B', 'bbb'));
     }
 
-    public function testPrefix() {
+    public function testPrefix()
+    {
         $adapter1 = new ApcAdapter();
-        $adapter2 = new ApcAdapter(1000, 'EjsmontCircuitBreaker');
-        $adapter3 = new ApcAdapter(1000, 'EjsmontCircuitWrong');
+        $adapter2 = new ApcAdapter(1000, 'CircuitBreaker');
+        $adapter3 = new ApcAdapter(1000, 'CircuitWrong');
 
         $adapter1->saveStatus('abc', 'def', 951);
 
@@ -121,8 +123,8 @@ class ArrayDecoratorTest extends TestCase {
         $this->assertEquals("", $adapter3->loadStatus('abc', 'def'));
     }
 
-    // just to get coverage and class loading
-    public function testExceptionSanity() {
+    public function testExceptionSanity()
+    {
         $e = new StorageException();
         $this->assertTrue($e instanceof \Exception);
     }

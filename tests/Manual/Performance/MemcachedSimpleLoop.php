@@ -11,13 +11,15 @@
 
 namespace Tests\Manual\Performance;
 
+require_once(__DIR__ . '/../../../vendor/autoload.php');
+
 use DavidGoodwin\CircuitBreaker\Factory;
 
 $callCount = 10000;
 
 $connection = new \Memcached();
 $connection->addServer("localhost", 11211);
-$connection->delete("EjsmontCircuitBreakerCircuitBreakerStatsAggregatedStats");
+$connection->delete("CircuitBreakerCircuitBreakerStatsAggregatedStats");
 
 $factory = new Factory();
 $cb = $factory->getMemcachedInstance($connection, 30, 3600);
@@ -36,5 +38,5 @@ $stop = microtime(true);
 
 print_r(array(
     sprintf("Total time for %d calls: %.4f", $callCount, $stop - $start),
-    unserialize($connection->get("EjsmontCircuitBreakerCircuitBreakerStatsAggregatedStats")),
+    json_decode($connection->get("CircuitBreakerCircuitBreakerStatsAggregatedStats"), true),
 ));

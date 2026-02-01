@@ -70,7 +70,7 @@ class MemcachedAdapterTest extends TestCase {
     }
 
     public function testLoadStatusEmpty() {
-        $this->_connection->delete('EjsmontCircuitBreakerAAAbbb');
+        $this->_connection->delete('CircuitBreakerAAAbbb');
         $this->assertEquals("", $this->_adapter->loadStatus('GGG', ''));
         $this->assertEquals("", $this->_adapter->loadStatus('AAA', 'bbb'));
         $this->_adapter->saveStatus('B', 'bbb', "");
@@ -80,8 +80,8 @@ class MemcachedAdapterTest extends TestCase {
 
     public function testPrefix() {
         $adapter1 = new MemcachedAdapter($this->_connection);
-        $adapter2 = new MemcachedAdapter($this->_connection, 1000, 'EjsmontCircuitBreaker');
-        $adapter3 = new MemcachedAdapter($this->_connection, 1000, 'EjsmontCircuitWrong');
+        $adapter2 = new MemcachedAdapter($this->_connection, 1000, 'CircuitBreaker');
+        $adapter3 = new MemcachedAdapter($this->_connection, 1000, 'CircuitWrong');
 
         $adapter1->saveStatus('abc', 'def', 951);
 

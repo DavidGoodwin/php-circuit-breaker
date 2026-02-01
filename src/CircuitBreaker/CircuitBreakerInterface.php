@@ -14,6 +14,7 @@ namespace DavidGoodwin\CircuitBreaker;
  * Main use case is to shield from remote service failures and be able to recover quickly with meaningful message.
  *
  * Typical simplified user code would look like this:
+ * <code>
  *      $result = false;
  *      if( $cb->isAvailable('myServiceName') ){
  *          if( HoweverYouConnectToTheService() ){
@@ -23,6 +24,7 @@ namespace DavidGoodwin\CircuitBreaker;
  *              $cb->reportFailure('myServiceName');
  *          }
  *      }
+ * </code>
  */
 interface CircuitBreakerInterface
 {
