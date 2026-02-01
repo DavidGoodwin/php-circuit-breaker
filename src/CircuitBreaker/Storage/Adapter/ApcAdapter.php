@@ -47,7 +47,8 @@ class ApcAdapter extends BaseAdapter {
      * @throws StorageException if storage error occurs, handler can not be used
      */
     protected function load(string $key) {
-        return apcu_fetch($key);
+        $result = apcu_fetch($key);
+        return $result === false ? '' : (string) $result;
     }
 
     /**
