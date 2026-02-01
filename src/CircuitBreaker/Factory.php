@@ -10,13 +10,13 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker;
+namespace DavidGoodwin\CircuitBreaker;
 
-use Ejsmont\CircuitBreaker\Core\CircuitBreaker;
-use Ejsmont\CircuitBreaker\Storage\Adapter\ApcAdapter;
-use Ejsmont\CircuitBreaker\Storage\Adapter\DummyAdapter;
-use Ejsmont\CircuitBreaker\Storage\Adapter\MemcachedAdapter;
-use Ejsmont\CircuitBreaker\Storage\Decorator\ArrayDecorator;
+use DavidGoodwin\CircuitBreaker\Core\CircuitBreaker;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\ApcAdapter;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\MemcachedAdapter;
+use DavidGoodwin\CircuitBreaker\Storage\Decorator\ArrayDecorator;
 
 /**
  * Allows easy assembly of circuit breaker instances.

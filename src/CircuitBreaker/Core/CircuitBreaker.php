@@ -10,11 +10,11 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker\Core;
+namespace DavidGoodwin\CircuitBreaker\Core;
 
-use Ejsmont\CircuitBreaker\CircuitBreakerInterface;
-use Ejsmont\CircuitBreaker\Storage\StorageInterface;
-use Ejsmont\CircuitBreaker\TrippedHandlerInterface;
+use DavidGoodwin\CircuitBreaker\CircuitBreakerInterface;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
+use DavidGoodwin\CircuitBreaker\TrippedHandlerInterface;
 
 /**
  * Allows user code to track availability of any service by serviceName.

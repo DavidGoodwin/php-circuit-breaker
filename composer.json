@@ -33,7 +33,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ejsmont\\": "src"
+            "DavidGoodwin\\CircuitBreaker\\": "src/CircuitBreaker"
         }
     }
 }

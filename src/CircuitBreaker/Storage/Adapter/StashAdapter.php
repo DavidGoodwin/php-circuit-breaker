@@ -1,8 +1,8 @@
 <?php
-namespace Ejsmont\CircuitBreaker\Storage\Adapter;
+namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
-use Ejsmont\CircuitBreaker\Storage\Adapter\BaseAdapter;
-use Ejsmont\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\BaseAdapter;
+use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 
 class StashAdapter extends BaseAdapter
 {

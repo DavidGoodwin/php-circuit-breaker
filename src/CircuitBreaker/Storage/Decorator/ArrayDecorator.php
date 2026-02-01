@@ -10,24 +10,10 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker\Storage\Decorator;
+namespace DavidGoodwin\CircuitBreaker\Storage\Decorator;
 
-use Ejsmont\CircuitBreaker\Storage\StorageInterface;
-
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
-namespace Ejsmont\CircuitBreaker\Storage\Decorator;
-
-use Ejsmont\CircuitBreaker\Storage\StorageInterface;
-use Ejsmont\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
+use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 
 /**
  * Service status data can be aggregated into one array.

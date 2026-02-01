@@ -33,7 +33,7 @@ After that you should update composer dependencies and you are good to go.
 
 Code of your application could look something like:
 <pre>
-    $factory = new Ejsmont\CircuitBreaker\Factory();
+    $factory = new DavidGoodwin\CircuitBreaker\Factory();
     $circuitBreaker = $factory->getSingleApcInstance(30, 300);
 
     $userProfile = null;
@@ -67,7 +67,7 @@ core business processes to be uninterrupted.
 
 Backend talking to the payment service could look like this:
 <pre>
-    $factory = new Ejsmont\CircuitBreaker\Factory();
+    $factory = new DavidGoodwin\CircuitBreaker\Factory();
     $circuitBreaker = $factory->getSingleApcInstance(30, 300);
 
     try{
@@ -88,7 +88,7 @@ to hide payment options that are failing.
 
 Frontend rendering the available payment options could look like this:
 <pre>
-    $factory = new Ejsmont\CircuitBreaker\Factory();
+    $factory = new DavidGoodwin\CircuitBreaker\Factory();
     $circuitBreaker = $factory->getSingleApcInstance(30, 300);
 
     if ($circuitBreaker->isAvailable("PaymentOptionOne")) {
@@ -115,7 +115,7 @@ Get/Set have been provided for these messages.
 Here is an example of a `EmailHandler`
 
 ```php
-use Ejsmont\CircuitBreaker\TrippedHandlerInterface;
+use DavidGoodwin\CircuitBreaker\TrippedHandlerInterface;
 
 class EmailHandler implements TrippedHandlerInterface
 {

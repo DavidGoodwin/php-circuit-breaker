@@ -10,9 +10,9 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker\Storage\Adapter;
+namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
-use Ejsmont\CircuitBreaker\Storage\StorageInterface;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 
 /**
  * Does not really persist stats between requests!

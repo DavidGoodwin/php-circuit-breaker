@@ -10,7 +10,7 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker\Storage;
+namespace DavidGoodwin\CircuitBreaker\Storage;
 
 /**
  * Thrown when storage handler class can not be used any more.

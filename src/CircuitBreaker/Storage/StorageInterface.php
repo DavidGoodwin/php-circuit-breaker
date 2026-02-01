@@ -10,9 +10,9 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker\Storage;
+namespace DavidGoodwin\CircuitBreaker\Storage;
 
-use Ejsmont\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageException;
 
 /**
  * Interface defines methods for storage adapters/decorators for the circuit breaker persistance.

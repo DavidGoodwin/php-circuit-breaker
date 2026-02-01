@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
 
-use Ejsmont\CircuitBreaker\Storage\Adapter\StashAdapter;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\StashAdapter;
 use PHPUnit\Framework\TestCase;
 
 class StashAdapterTest extends TestCase
@@ -102,7 +102,7 @@ class StashAdapterTest extends TestCase
 
     public function testFailSave()
     {
-        $this->expectException(\Ejsmont\CircuitBreaker\Storage\StorageException::class);
+        $this->expectException(\DavidGoodwin\CircuitBreaker\Storage\StorageException::class);
         
         $stashMock = $this->createMock('\Stash\Pool');
         $stashMock->expects($this->once())->method("getItem")->will($this->throwException(new \Exception("some error")));
@@ -113,7 +113,7 @@ class StashAdapterTest extends TestCase
 
     public function testFailLoad()
     {
-        $this->expectException(\Ejsmont\CircuitBreaker\Storage\StorageException::class);
+        $this->expectException(\DavidGoodwin\CircuitBreaker\Storage\StorageException::class);
         
         $stashMock = $this->createMock('\Stash\Pool');
         $stashMock->expects($this->once())->method("getItem")->will($this->throwException(new \Exception("some error")));

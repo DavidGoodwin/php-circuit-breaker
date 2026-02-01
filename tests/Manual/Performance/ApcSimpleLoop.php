@@ -11,7 +11,7 @@
 
 namespace Tests\Manual\Performance;
 
-use Ejsmont\CircuitBreaker\Factory;
+use DavidGoodwin\CircuitBreaker\Factory;
 
 $callCount = 10000;
 

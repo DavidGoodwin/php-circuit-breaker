@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Ejsmont\CircuitBreaker;
 
-use Ejsmont\CircuitBreaker\Factory;
-use Ejsmont\CircuitBreaker\CircuitBreakerInterface;
+use DavidGoodwin\CircuitBreaker\Factory;
+use DavidGoodwin\CircuitBreaker\CircuitBreakerInterface;
 use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase {

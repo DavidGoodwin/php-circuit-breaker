@@ -6,7 +6,7 @@
  * Time: 11:53 AM
  */
 
-namespace Ejsmont\CircuitBreaker;
+namespace DavidGoodwin\CircuitBreaker;
 
 
 interface TrippedHandlerInterface

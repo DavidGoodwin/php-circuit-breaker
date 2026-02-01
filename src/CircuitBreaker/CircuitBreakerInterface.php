@@ -10,7 +10,7 @@
  * For the full copyright and license information, please view the LICENSE file.
  */
 
-namespace Ejsmont\CircuitBreaker;
+namespace DavidGoodwin\CircuitBreaker;
 
 /**
  * Allows user code to track avability/unavailability of any service by serviceName.

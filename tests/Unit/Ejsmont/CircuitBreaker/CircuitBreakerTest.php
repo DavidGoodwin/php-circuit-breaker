@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Ejsmont\CircuitBreaker;
 
-use Ejsmont\CircuitBreaker\Storage\Adapter\DummyAdapter;
-use Ejsmont\CircuitBreaker\Core\CircuitBreaker;
+use DavidGoodwin\CircuitBreaker\Storage\Adapter\DummyAdapter;
+use DavidGoodwin\CircuitBreaker\Core\CircuitBreaker;
 use PHPUnit\Framework\TestCase;
 
 class CircuitBreakerTest extends TestCase {
