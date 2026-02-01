@@ -3,28 +3,29 @@
 namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
 
 use Ejsmont\CircuitBreaker\Storage\Adapter\ApcAdapter;
+use PHPUnit\Framework\TestCase;
 
-class ApcAdapterTest extends \PHPUnit_Framework_TestCase {
+class ApcAdapterTest extends TestCase {
 
     private $_adapter;
 
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         
-        if(!function_exists('apc_clear_cache')){
-            $this->markTestSkipped("APC not installed");
+        if(!function_exists('apcu_clear_cache')){
+            $this->markTestSkipped("APCu not installed");
         }
 
         if(ini_get('apc.enable_cli') === '0') {
-            $this->markTestSkipped('APC not enabled for CLI');
+            $this->markTestSkipped('APCu not enabled for CLI');
         }
 
-        apc_clear_cache('user');
+        apcu_clear_cache();
 
         $this->_adapter = new ApcAdapter();
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $this->_adapter = null;
         parent::tearDown();
     }
@@ -44,7 +45,7 @@ class ApcAdapterTest extends \PHPUnit_Framework_TestCase {
     public function testSaveClear() {
         $x = "valB";
         $this->_adapter->saveStatus('AAA', 'BBB', $x);
-        apc_clear_cache('user');
+        apcu_clear_cache();
 
         $this->assertEquals("", $this->_adapter->loadStatus('AAA', 'BBB'));
     }

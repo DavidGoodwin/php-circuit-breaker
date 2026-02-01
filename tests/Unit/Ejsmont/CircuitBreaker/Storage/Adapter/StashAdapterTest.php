@@ -3,8 +3,9 @@
 namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
 
 use Ejsmont\CircuitBreaker\Storage\Adapter\StashAdapter;
+use PHPUnit\Framework\TestCase;
 
-class StashAdapterTest extends \PHPUnit_Framework_TestCase
+class StashAdapterTest extends TestCase
 {
 
     /**
@@ -17,7 +18,7 @@ class StashAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private $_pool;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         if (!class_exists('\Stash\Pool')) {
@@ -28,7 +29,7 @@ class StashAdapterTest extends \PHPUnit_Framework_TestCase
         $this->_adapter = new StashAdapter($this->_pool);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_adapter = null;
         parent::tearDown();
@@ -99,24 +100,22 @@ class StashAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("", $adapter3->loadStatus('abc', 'def'));
     }
 
-    /**
-     * @expectedException Ejsmont\CircuitBreaker\Storage\StorageException 
-     */
     public function testFailSave()
     {
-        $stashMock = $this->getMock('\Stash\Pool', array('getItem', 'setItem'), array(), "", false);
+        $this->expectException(\Ejsmont\CircuitBreaker\Storage\StorageException::class);
+        
+        $stashMock = $this->createMock('\Stash\Pool');
         $stashMock->expects($this->once())->method("getItem")->will($this->throwException(new \Exception("some error")));
 
         $adapter = new StashAdapter($stashMock);
         $adapter->saveStatus('someService', 'someValue', 951);
     }
 
-    /**
-     * @expectedException Ejsmont\CircuitBreaker\Storage\StorageException 
-     */
     public function testFailLoad()
     {
-        $stashMock = $this->getMock('\Stash\Pool', array('getItem', 'setItem'), array(), "", false);
+        $this->expectException(\Ejsmont\CircuitBreaker\Storage\StorageException::class);
+        
+        $stashMock = $this->createMock('\Stash\Pool');
         $stashMock->expects($this->once())->method("getItem")->will($this->throwException(new \Exception("some error")));
 
         $adapter = new StashAdapter($stashMock);

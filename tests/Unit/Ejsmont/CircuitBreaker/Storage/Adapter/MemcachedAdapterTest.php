@@ -3,8 +3,9 @@
 namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
 
 use Ejsmont\CircuitBreaker\Storage\Adapter\MemcachedAdapter;
+use PHPUnit\Framework\TestCase;
 
-class MemcachedAdapterTest extends \PHPUnit_Framework_TestCase {
+class MemcachedAdapterTest extends TestCase {
 
     /**
      * @var MemcachedAdapter 
@@ -16,7 +17,7 @@ class MemcachedAdapterTest extends \PHPUnit_Framework_TestCase {
      */
     private $_connection;
 
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         if (!class_exists('\Memcached')) {
             $this->markTestSkipped("extension not loaded");
@@ -26,7 +27,7 @@ class MemcachedAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->_adapter = new MemcachedAdapter($this->_connection);
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $this->_adapter = null;
         parent::tearDown();
     }
@@ -88,22 +89,20 @@ class MemcachedAdapterTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("", $adapter3->loadStatus('abc', 'def'));
     }
 
-    /**
-     * @expectedException Ejsmont\CircuitBreaker\Storage\StorageException 
-     */
     public function testFailSave() {
-        $memcachedMock = $this->getMock("Memcached", array('get', 'set'), array(), "", false);
+        $this->expectException(\Ejsmont\CircuitBreaker\Storage\StorageException::class);
+        
+        $memcachedMock = $this->createMock(\Memcached::class);
         $memcachedMock->expects($this->once())->method("set")->will($this->throwException(new \Exception("some error")));
         
         $adapter = new MemcachedAdapter($memcachedMock);
         $adapter->saveStatus('someService', 'someValue', 951);
     }
 
-    /**
-     * @expectedException Ejsmont\CircuitBreaker\Storage\StorageException 
-     */
     public function testFailLoad() {
-        $memcachedMock = $this->getMock("Memcached", array('get', 'set'), array(), "", false);
+        $this->expectException(\Ejsmont\CircuitBreaker\Storage\StorageException::class);
+        
+        $memcachedMock = $this->createMock(\Memcached::class);
         $memcachedMock->expects($this->once())->method("get")->will($this->throwException(new \Exception("some error")));
         
         $adapter = new MemcachedAdapter($memcachedMock);

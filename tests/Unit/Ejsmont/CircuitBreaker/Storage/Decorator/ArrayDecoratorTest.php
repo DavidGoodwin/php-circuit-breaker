@@ -5,30 +5,31 @@ namespace Tests\Unit\Ejsmont\CircuitBreaker\Adapter;
 use Ejsmont\CircuitBreaker\Storage\Adapter\ApcAdapter;
 use Ejsmont\CircuitBreaker\Storage\Decorator\ArrayDecorator;
 use Ejsmont\CircuitBreaker\Storage\StorageException;
+use PHPUnit\Framework\TestCase;
 
-class ArrayDecoratorTest extends \PHPUnit_Framework_TestCase {
+class ArrayDecoratorTest extends TestCase {
 
     /**
      * @var ArrayDecorator 
      */
     private $adapter;
 
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
 
-        if(!function_exists('apc_clear_cache')){
-            $this->markTestSkipped("APC not installed");
+        if(!function_exists('apcu_clear_cache')){
+            $this->markTestSkipped("APCu not installed");
         }
         if(ini_get('apc.enable_cli') === "0") {
-            $this->markTestSkipped("APC not enabled for CLI");
+            $this->markTestSkipped("APCu not enabled for CLI");
         }
 
-        apc_clear_cache('user');
+        apcu_clear_cache();
 
         $this->adapter = new ArrayDecorator(new ApcAdapter());
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $this->adapter = null;
         parent::tearDown();
     }
@@ -73,7 +74,7 @@ class ArrayDecoratorTest extends \PHPUnit_Framework_TestCase {
         $this->adapter->saveStatus('AAAC', 'BBBC', "valB", true);
         // value loaded from array
         $this->assertEquals("valB", $this->adapter->loadStatus('AAAC', 'BBBC'));
-        apc_clear_cache('user');
+        apcu_clear_cache();
         $this->assertEquals("valB", $this->adapter->loadStatus('AAAC', 'BBBC'));
     }
 

@@ -16,7 +16,7 @@ use Ejsmont\CircuitBreaker\Storage\Adapter\BaseAdapter;
 use Ejsmont\CircuitBreaker\Storage\StorageException;
 
 /**
- * Recommended adapter using APC local shared memory cache.
+ * Recommended adapter using APCu local shared memory cache.
  * Super fast, safe, always available (if installed).
  * Does not introduce remote point of failure.
  * Can be efficently used to load/save each attribute separately if you wish
@@ -37,14 +37,14 @@ class ApcAdapter extends BaseAdapter {
     }
 
     /**
-     * Helper method to make sure that APC extension is loaded
+     * Helper method to make sure that APCu extension is loaded
      * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if APC is not loaded
+     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if APCu is not loaded
      * @return void
      */
     protected function checkExtension() {
-        if (!function_exists("apc_store")) {
-            throw new StorageException("APC extension not loaded.");
+        if (!function_exists("apcu_store")) {
+            throw new StorageException("APCu extension not loaded.");
         }
     }
 
@@ -57,7 +57,7 @@ class ApcAdapter extends BaseAdapter {
      * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
      */
     protected function load($key) {
-        return apc_fetch($key);
+        return apcu_fetch($key);
     }
 
     /**
@@ -71,7 +71,7 @@ class ApcAdapter extends BaseAdapter {
      * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
      */
     protected function save($key, $value, $ttl) {
-        $result = apc_store($key, $value, $ttl);
+        $result = apcu_store($key, $value, $ttl);
         if ($result === false) {
             throw new StorageException("Failed to save apc key: $key");
         }

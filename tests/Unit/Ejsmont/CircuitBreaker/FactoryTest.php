@@ -4,18 +4,19 @@ namespace Tests\Unit\Ejsmont\CircuitBreaker;
 
 use Ejsmont\CircuitBreaker\Factory;
 use Ejsmont\CircuitBreaker\CircuitBreakerInterface;
+use PHPUnit\Framework\TestCase;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase {
+class FactoryTest extends TestCase {
 
     public function testThreshold() {
-        if(!function_exists('apc_clear_cache')){
-            $this->markTestSkipped("APC not installed");
+        if(!function_exists('apcu_clear_cache')){
+            $this->markTestSkipped("APCu not installed");
         }
 
         if(ini_get('apc.enable_cli') === "0") {
-            $this->markTestSkipped("APC not enabled for CLI");
+            $this->markTestSkipped("APCu not enabled for CLI");
         }
-        apc_clear_cache('user');
+        apcu_clear_cache();
     
         $factory = new Factory();
         $cb = $factory->getSingleApcInstance(3);

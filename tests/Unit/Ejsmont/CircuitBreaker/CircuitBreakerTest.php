@@ -4,8 +4,9 @@ namespace Tests\Unit\Ejsmont\CircuitBreaker;
 
 use Ejsmont\CircuitBreaker\Storage\Adapter\DummyAdapter;
 use Ejsmont\CircuitBreaker\Core\CircuitBreaker;
+use PHPUnit\Framework\TestCase;
 
-class CircuitBreakerTest extends \PHPUnit_Framework_TestCase {
+class CircuitBreakerTest extends TestCase {
 
     /** @var DummyAdapter */
     private $_adapter;
@@ -19,7 +20,7 @@ class CircuitBreakerTest extends \PHPUnit_Framework_TestCase {
         "dbWrong" => array('maxFailures' => 0, 'retryTimeout' => 0),
     );
 
-    protected function setUp() {
+    protected function setUp(): void {
 
         parent::setUp();
         $this->_adapter = new DummyAdapter();
@@ -30,7 +31,7 @@ class CircuitBreakerTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $this->_adapter = null;
         $this->_cb = null;
         parent::tearDown();
