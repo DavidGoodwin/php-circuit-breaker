@@ -2,14 +2,16 @@
 
 /**
  * Simple script calling circuit breaker thousands of times reporting success or error and checking statuses
- * 
- * This can be used to see how circuit breaker can be instantinated and used easily, it also gives gauge 
+ *
+ * This can be used to see how circuit breaker can be instantinated and used easily, it also gives gauge
  * of the approximate performance.
- * 
- * APC backend: ~0.0001s per check+report 
+ *
+ * APC backend: ~0.0001s per check+report
  */
 
 namespace Tests\Manual\Performance;
+
+require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 use DavidGoodwin\CircuitBreaker\Factory;
 
@@ -31,6 +33,6 @@ for ($i = 0; $i < $callCount; $i++) {
 $stop = microtime(true);
 
 print_r(array(
-    sprintf("Total time for %d calls: %.4f", $callCount, $stop - $start),
-    unserialize(apc_fetch("EjsmontCircuitBreakerCircuitBreakerStatsAggregatedStats")),
+    sprintf("Total time for %d APC calls: %.4f", $callCount, $stop - $start),
+    json_decode(apcu_fetch("CircuitBreakerAggregatedStats")),
 ));

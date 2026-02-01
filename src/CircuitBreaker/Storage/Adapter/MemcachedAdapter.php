@@ -1,67 +1,47 @@
 <?php
 
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
-use DavidGoodwin\CircuitBreaker\Storage\Adapter\BaseAdapter;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 
 /**
  * Reasonably useful implementation if you needed to share circuit breaker across servers.
- * It incurs the network connection penalty so for optimal performance APC or shared 
- * memeory is preferred but if extra millisecods are not an issue this 
+ * It incurs the network connection penalty so for optimal performance APC or shared
+ *  memory is preferred, but if extra milliseconds are not an issue this
  * adapter could work well. Consider using array adapter to minimise memcache calls.
- * 
- * @see Ejsmont\CircuitBreaker\Storage\StorageInterface
- * @package Ejsmont\CircuitBreaker\Components
+ *
+ * @see StorageInterface
  */
-class MemcachedAdapter extends BaseAdapter {
+class MemcachedAdapter extends BaseAdapter
+{
+    private \Memcached $memcached;
 
-    /**
-     * @var Memcached
-     */
-    private $memcached;
-
-    /**
-     * Prepare instance
-     * 
-     * @param Memcached $memcached
-     */
-    public function __construct(\Memcached $memcached, $ttl = 3600, $cachePrefix = false) {
+    public function __construct(\Memcached $memcached, int $ttl = 3600, ?string $cachePrefix = null)
+    {
         parent::__construct($ttl, $cachePrefix);
         $this->memcached = $memcached;
     }
 
     /**
-     * Helper method to make sure that memcached extension is loaded
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if memcached is not loaded
      * @return void
      */
-    protected function checkExtension() {
+    protected function checkExtension()
+    {
         // nothing to do as you would not have \Memcached instance in constructor if extension was not loaded
     }
 
     /**
      * Loads item by cache key.
-     * 
      * @param string $key
      * @return mixed
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
      */
-    protected function load($key) {
+    protected function load(string $key)
+    {
         try {
-            return $this->memcached->get($key);
+            $result = $this->memcached->get($key);
+
+            return $result === false ? '' : (string) $result;
         } catch (\Exception $e) {
             throw new StorageException("Failed to load memcached key: $key", 1, $e);
         }
@@ -69,20 +49,13 @@ class MemcachedAdapter extends BaseAdapter {
 
     /**
      * Save item in the cache.
-     * 
-     * @param string $key
-     * @param string $value
-     * @param int $ttl
-     * @return void
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
      */
-    protected function save($key, $value, $ttl) {
+    protected function save(string $key, string $value, int $ttl): void
+    {
         try {
             $this->memcached->set($key, $value, $ttl);
         } catch (\Exception $e) {
             throw new StorageException("Failed to save memcached key: $key", 1, $e);
         }
     }
-
 }
