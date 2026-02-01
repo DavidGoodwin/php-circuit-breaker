@@ -8,7 +8,7 @@ A component helping you gracefully handle outages and timeouts of external servi
 It is a library providing extremely easy to use circuit breaker component. It does not require external dependencies and it has default storage
 implementations for APCu and Memcached but can be extended multiple ways.
 
-# Frameworks support
+# Requirements
 
 This library does not require any particular PHP framework, all you need is PHP 7.4 or higher.
 
@@ -19,11 +19,7 @@ This library does not require any particular PHP framework, all you need is PHP 
 
 # Installation
 
-    "require": {
-        "davidgoodwin/php-circuit-breaker": "^1.0"
-    },
-
-After that you should update composer dependencies and you are good to go.
+`composer require davidgoodwin/php-circuit-breaker`
 
 ## Use Case - Non-Critical Feature
 
@@ -165,7 +161,12 @@ Some implementation details has changed but the core logic is still the same.
 (Update) You can read my blog on what I do with this package, http://bolt.tamingtheelephpant.com/page/circuit-breakers-failing-gracefully
 
 ## Unit Testing
-`phpunit -c tests/phpunit.xml --bootstrap tests/bootstrap.php tests`
+
+`composer test`
+
+or ...
+
+`vendor/bin/phpunit tests`
 
 ## Author
 

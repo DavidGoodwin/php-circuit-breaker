@@ -32,6 +32,9 @@
         "phpunit/phpunit": "^9.5",
         "tedivm/stash": "^0.17|^1.0"
     },
+    "scripts": {
+        "tests": "@php vendor/bin/phpunit tests --do-not-cache-result "
+    },
     "autoload": {
         "psr-4": {
             "DavidGoodwin\\CircuitBreaker\\": "src/CircuitBreaker"
