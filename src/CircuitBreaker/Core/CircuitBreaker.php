@@ -171,7 +171,7 @@ class CircuitBreaker implements CircuitBreakerInterface
      */
     protected function setFailures(string $serviceName, int $newValue): void
     {
-        $this->storageAdapter->saveStatus($serviceName, 'failures', "newValue", false);
+        $this->storageAdapter->saveStatus($serviceName, 'failures', (string)$newValue, false);
         // make sure storage adapter flushes changes this time
         $this->storageAdapter->saveStatus($serviceName, 'lastTest', (string)time(), true);
     }
