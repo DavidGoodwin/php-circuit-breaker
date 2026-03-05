@@ -1,47 +1,37 @@
 <?php
 
-/**
- * This file is part of the php-circuit-breaker package.
- * 
- * @link https://github.com/ejsmont-artur/php-circuit-breaker
- * @link http://artur.ejsmont.org/blog/circuit-breaker
- * @author Artur Ejsmont
- *
- * For the full copyright and license information, please view the LICENSE file.
- */
-
 namespace DavidGoodwin\CircuitBreaker\Storage\Adapter;
 
-use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 use DavidGoodwin\CircuitBreaker\Storage\StorageException;
+use DavidGoodwin\CircuitBreaker\Storage\StorageInterface;
 
 /**
  * Parent with potentially reusable functions of cache adapters
- * 
- * @see Ejsmont\CircuitBreaker\Storage\StorageInterface
- * @package Ejsmont\CircuitBreaker\Components
+ *
+ * @see StorageInterface
  */
-abstract class BaseAdapter implements StorageInterface {
-
+abstract class BaseAdapter implements StorageInterface
+{
     /**
      * @var int value in seconds, how long should the stats array persist in cache
      */
-    protected $ttl;
+    protected int $ttl;
 
     /**
-     * @var string cache key prefix, might be overridden in constructor in the future
+     * @var string cache key prefix, might be overridden in constructor
      */
-    protected $cachePrefix = "EjsmontCircuitBreaker";
+    protected string $cachePrefix = "CircuitBreaker";
 
     /**
      * Configure instance
-     * 
-     * @param Integer $ttl          How long should circuit breaker data persist (between updates)
-     * @param String  $cachePrefix  Value has to be string. If empty default cache key prefix is used.
+     *
+     * @param int $ttl How long should circuit breaker data persist (between updates)
+     * @param string $cachePrefix Value has to be string. If empty default cache key prefix is used.
      */
-    public function __construct($ttl = 3600, $cachePrefix = false) {
+    public function __construct(int $ttl = 3600, ?string $cachePrefix = null)
+    {
         $this->ttl = $ttl;
-        if ($cachePrefix && is_string($cachePrefix)) {
+        if (is_string($cachePrefix)) {
             $this->cachePrefix = $cachePrefix;
         }
     }
@@ -51,14 +41,15 @@ abstract class BaseAdapter implements StorageInterface {
      * For example failures count or last retry time.
      * Method does not care what are the attribute names. They are not inspected.
      * Any string can be passed as service name and attribute name.
-     * 
-     * @param 	string  $serviceName   name of service to load stats for
-     * @param 	string  $attributeName name of attribute to load
-     * @return 	string  value stored or '' if value was not found
-     *  
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @param string $serviceName name of service to load stats for
+     * @param string $attributeName name of attribute to load
+     * @return    string  value stored or '' if value was not found
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    public function loadStatus($serviceName, $attributeName) {
+    public function loadStatus(string $serviceName, string $attributeName): string
+    {
         // make sure extension is loaded
         $this->checkExtension();
         // try to load the data
@@ -72,22 +63,23 @@ abstract class BaseAdapter implements StorageInterface {
 
     /**
      * Saves circuit breaker service status value.
-     * Method does not care what are the attribute names. They are not inspected.
-     * Any string can be passed as service name and attribute name, value can be int/string.
-     * 
+     *
+     * Any string can be passed as a service name and attribute name, value can be int/string.
+     *
      * Saving in storage is not guaranteed unless flush is set to true.
-     * Use calls without flush if you know you will update more than one value and you want to
-     * improve performance of the calls.
-     * 
-     * @param 	string  $serviceName   name of service to load stats for
-     * @param 	string  $attributeName name of the attribute to load 
-     * @param 	string  $value         string value loaded or '' if nothing found 
-     * @param   boolean $flush         set to true will force immediate save, false does not guaranteed saving at all.
-     * @return 	void
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     * Use calls without a flush if you know you will update more than one value and you want to
+     * improve the performance of the calls.
+     *
+     * @param string $serviceName name of service to load stats for
+     * @param string $attributeName name of the attribute to load
+     * @param string $value string value loaded or '' if nothing found
+     * @param bool $flush set to true will force immediate save, false does not guaranteed saving at all.
+     * @return    void
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    public function saveStatus($serviceName, $attributeName, $value, $flush = false) {
+    public function saveStatus(string $serviceName, string $attributeName, string $value, bool $flush = false): void
+    {
         // make sure extension is loaded
         $this->checkExtension();
         // store stats
@@ -96,31 +88,31 @@ abstract class BaseAdapter implements StorageInterface {
 
     /**
      * Helper method to make sure that extension is loaded (implementation dependent)
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if extension is not loaded
+     *
      * @return void
+     * @throws StorageException if extension is not loaded
      */
     abstract protected function checkExtension();
 
     /**
      * Loads item by cache key.
-     * 
+     *
      * @param string $key
      * @return mixed
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    abstract protected function load($key);
+    abstract protected function load(string $key);
 
     /**
      * Save item in the cache.
-     * 
+     *
      * @param string $key
      * @param string $value
      * @param int $ttl
      * @return void
-     * 
-     * @throws Ejsmont\CircuitBreaker\Storage\StorageException if storage error occurs, handler can not be used
+     *
+     * @throws StorageException if storage error occurs, handler can not be used
      */
-    abstract protected function save($key, $value, $ttl);
+    abstract protected function save(string $key, string $value, int $ttl): void;
 }
