@@ -24,7 +24,7 @@ class MemcachedAdapterTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->adapter = null;
+        $this->connection->flush();
         parent::tearDown();
     }
 

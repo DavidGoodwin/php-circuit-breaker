@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class DummyAdapterTest extends TestCase
 {
-    private $adapter;
+    private DummyAdapter $adapter;
 
     protected function setUp(): void
     {
